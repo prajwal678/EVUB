@@ -6,6 +6,9 @@ export const actions: Actions = {
         const email = formData.get('email');
         const password = formData.get('password');
         const confirmPassword = formData.get('confirmPassword');
+        const firstName = formData.get('firstName');
+        const lastName = formData.get('lastName');
+        const phone_no = formData.get('phone_no');
         const role = formData.get('role');
 
         // Validate form data
@@ -17,7 +20,7 @@ export const actions: Actions = {
             const response = await fetch('http://localhost:5173/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, role })
+                body: JSON.stringify({ email, password, firstName, lastName, phone_no, role })
             });
 
             const data = await response.json();
