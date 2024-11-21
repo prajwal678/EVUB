@@ -2,6 +2,7 @@
 
     let email = '';
     let password = '';
+    let role = 'user'; // Default role
     let error = '';
   
     async function handleLogin() {
@@ -21,7 +22,7 @@
                 localStorage.setItem('userRole', data.role);
                 localStorage.setItem('email', data.email);
 
-                if (data.role === 'admin') {
+                if (role === 'admin') {
                     window.location.href = '/admindashboard';
                 } else {
                   window.location.href = '/userdashboard';
@@ -49,6 +50,16 @@
       <form on:submit|preventDefault={handleLogin}>
         <input type="email" bind:value={email} placeholder="Email" required />
         <input type="password" bind:value={password} placeholder="Password" required />
+
+        <div class="role-selection">
+          <label>
+            <input type="radio" bind:group={role} value="user" /> User
+          </label>
+          <label>
+            <input type="radio" bind:group={role} value="admin" /> Admin
+          </label>
+        </div>
+
         <button type="submit">Login</button>
         {#if error}
           <p class="error-message">{error}</p>
@@ -59,6 +70,23 @@
   </div>
   
   <style>
+      .role-selection {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    gap: 1rem; /* Add spacing between the buttons */
+    margin: 1rem 0; /* Add some vertical spacing */
+  }
+
+  .role-selection label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem; /* Adjust font size for better visibility */
+    cursor: pointer;
+  }
+
+  .role-selection input[type="radio"] {
+    margin-right: 0.5rem; /* Add space between the radio button and the label text */
+  }
     /* App Container */
     .app-container {
       font-family: Arial, sans-serif;
