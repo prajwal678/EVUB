@@ -85,17 +85,13 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT) : 5173;
 const JWT_KEY = process.env.JWT_SECRET_KEY || 'default';
 
 const dbConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || '',
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: 'localhost',
+  user: 'dbms_proj',
+  password: '1234',
+  database: 'Event_Club_db',
 };
 
 console.log(dbConfig);
-console.log("DB_HOST:", process.env.DB_HOST);
-console.log("DB_USER:", process.env.DB_USER);
-console.log("DB_PASS:", process.env.DB_PASS);
-console.log("DB_NAME:", process.env.DB_NAME);
 
 
 // const authenticateToken = (req: Request, res: Response, next: Function) => {
