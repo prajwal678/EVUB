@@ -1,0 +1,1 @@
+DROP DATABASE Event_Club_db;
