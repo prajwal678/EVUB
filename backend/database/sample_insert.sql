@@ -49,3 +49,10 @@ INSERT INTO venue_booking (bookingID, venueID, eventID, bookingDate, bookingStar
 VALUES 
 ('BOOK001', 'VEN001', 'EVT001', '2024-11-10', '10:00:00', '14:00:00'),  -- Main Hall booked for Art Exhibition
 ('BOOK002', 'VEN002', 'EVT002', '2024-11-12', '09:00:00', '17:00:00');  -- Conference Room booked for Science Fair
+
+
+INSERT INTO event (eventID, eventName, eventDate, eventStartTime, eventEndTime, clubID, venueID) 
+VALUES 
+('EVT003', 'Coding Workshop', '2024-11-22', '10:00:00', '13:00:00', 'C003', 'VEN003'),
+('EVT004', 'Music Fest', '2024-11-22', '15:00:00', '18:00:00', 'C004', 'VEN004'),
+('EVT005', 'Dance Competition', '2024-11-22', '12:00:00', '16:00:00', 'C005', 'VEN005');
