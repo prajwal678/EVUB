@@ -10,7 +10,7 @@
 </script>
 
 <div>
-    <form method="post" action="?/register">
+    <form method="post">
         <h2>Register</h2>
         <input type="text" bind:value={firstName} name="firstName" placeholder="First Name" required />
         <input type="text" bind:value={lastName} name="lastName" placeholder="Last Name" required />
