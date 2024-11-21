@@ -10,6 +10,7 @@ export const actions: Actions = {
         const lastName = formData.get('lastName');
         const phone_no = formData.get('phone_no');
         const role = formData.get('role');
+        const SRN = formData.get('SRN');
 
         // Validate form data
         if (!email || !password || !confirmPassword || password !== confirmPassword) {

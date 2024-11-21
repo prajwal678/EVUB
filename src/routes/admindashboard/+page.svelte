@@ -77,7 +77,6 @@
       <h1>EVUB</h1>
       <ul>
           <li><a href="/admindashboard">Home</a></li>
-          <li><a href="/events_admin">Events</a></li>
           <li><button on:click={handleLogout}>Logout</button></li>
       </ul>
   </nav>

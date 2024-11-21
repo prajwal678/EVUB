@@ -47,7 +47,11 @@
     <div class="register-container">
       <h2>Register</h2>
       <form on:submit|preventDefault={handleRegister}>
+        <input type="text" bind:value={SRN} placeholder="SRN" required />
+        <input type="text" bind:value={firstName} placeholder="FirstName" required />
+        <input type="text" bind:value={lastName} placeholder="LastName" required />
         <input type="email" bind:value={email} placeholder="Email" required />
+        <input type="int" bind:value={phone_no} placeholder="Phone No." required />
         <input type="password" bind:value={password} placeholder="Password" required />
         <input type="password" bind:value={confirmPassword} placeholder="Confirm Password" required />
   
