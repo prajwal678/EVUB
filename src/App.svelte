@@ -18,6 +18,7 @@
     }
   });
 
+  
   function logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
@@ -34,5 +35,6 @@
     <a href="/register">Register</a>
   {/if}
 </nav>
+
 
 <slot />
