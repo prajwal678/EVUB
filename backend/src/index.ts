@@ -91,7 +91,7 @@ const dbConfig = {
   database: 'Event_Club_db',
 };
 
-console.log(dbConfig);
+// console.log(dbConfig);
 
 
 // const authenticateToken = (req: Request, res: Response, next: Function) => {
@@ -167,6 +167,7 @@ class App {
 
           if (!this.connection) {
               res.status(500).json({ message: 'Database connection error' });
+              console.log(res)
               return;
           }
           await this.connection.execute(query, [SRN, email, hashedPassword, phone_no, firstName, lastName, token]);

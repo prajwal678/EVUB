@@ -14,7 +14,7 @@ const dbConfig = {
     password: '1234',
     database: 'Event_Club_db',
 };
-console.log(dbConfig);
+// console.log(dbConfig);
 // const authenticateToken = (req: Request, res: Response, next: Function) => {
 //   const authHeader = req.headers['authorization'];
 //   const token = authHeader && authHeader.split(' ')[1];
@@ -75,6 +75,7 @@ class App {
             const query = `INSERT INTO student (SRN, email, pwd, phone_no, firstName, lastName, token) VALUES (?, ?, ?, ?, ?, ?, ?);`;
             if (!this.connection) {
                 res.status(500).json({ message: 'Database connection error' });
+                console.log(res);
                 return;
             }
             await this.connection.execute(query, [SRN, email, hashedPassword, phone_no, firstName, lastName, token]);
