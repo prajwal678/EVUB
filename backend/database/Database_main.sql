@@ -176,3 +176,24 @@ END;
 DELIMITER ;
 
 
+-- deleting query
+-- Delete associated records from the `venue_booking` table
+DELETE FROM venue_booking
+WHERE eventID = (SELECT eventID FROM event WHERE eventID = 'EVE12345');
+
+-- Delete associated records from the `registration` table
+DELETE FROM registration
+WHERE eventID = (SELECT eventID FROM event WHERE eventID = 'EVE12345');
+
+-- Delete the event from the `event` table
+DELETE FROM event
+WHERE eventID = 'EVE12345';
+
+
+
+-- agregate 
+SELECT eventDate, COUNT(eventID) AS number_of_events
+FROM event
+WHERE eventDate = '2024-11-21' -- Replace with the desired date
+GROUP BY eventDate;
+
