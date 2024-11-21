@@ -15,12 +15,12 @@
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
 
-    // // Validate passwords
-    // if (password !== confirmPassword) {
-    //   error = 'Passwords do not match';
-    //   successMessage = '';
-    //   return;
-    // }
+    // Validate passwords
+    if (password !== confirmPassword) {
+      error = 'Passwords do not match';
+      successMessage = '';
+      return;
+    }
 
     error = '';
     successMessage = '';
@@ -31,8 +31,7 @@
       lastName,
       email,
       phone_no,
-      password,
-      // confirmPassword,
+      pwd: password,
       role,
     };
 
@@ -80,7 +79,7 @@
       <input type="email" bind:value={email} placeholder="Email" required />
       <input type="text" bind:value={phone_no} placeholder="Phone No." required />
       <input type="password" bind:value={password} placeholder="Password" required />
-      <!-- <input type="password" bind:value={confirmPassword} placeholder="Confirm Password" required /> -->
+      <input type="password" bind:value={confirmPassword} placeholder="Confirm Password" required />
 
       <div class="role-selection">
         <label>

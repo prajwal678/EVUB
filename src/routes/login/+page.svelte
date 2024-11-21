@@ -1,6 +1,6 @@
 <script>
-    import { navigate } from "svelte-routing";
-  
+    import { goto } from '$app/navigation';
+
     let email = '';
     let password = '';
     let error = '';
@@ -10,25 +10,30 @@
             const response = await fetch('http://localhost:5173/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, pwd: password })
             });
             const data = await response.json();
   
             if (response.status === 404) {
                 error = 'User not registered';
-            } else if (response.ok && data.token) {
+            }
+            else if (response.ok && data.token) {
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('userRole', data.role);
-  
+                // goto(role === 'admin' ? '/admindashboard' : '/userdashboard');
+
                 if (data.role === 'admin') {
-                    navigate('/admindashboard');
-                } else {
-                    navigate('/userdashboard');
+                    goto('./admindashboard');
                 }
-            } else {
+                else {
+                    goto('./userdashboard');
+                }
+            }
+            else {
                 error = 'Invalid credentials';
             }
-        } catch (err) {
+        }
+        catch (err) {
             error = 'Login failed. Please try again later.';
         }
     }

@@ -20,11 +20,13 @@
 
   
   function logout() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userRole');
-    isAuthenticated.set(false);
-    goto('/login');
-  }
+        if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        }
+        isAuthenticated.set(false);
+        goto('/login');
+    }
 </script>
 
 <nav>
