@@ -146,6 +146,7 @@ class App {
       this.app.get('/events/filter', (req, res) => this.filterEvents(req, res));
       this.app.post('/events/add', (req, res) => this.addEvent(req, res));
       this.app.post('/events/register', (req, res) => this.registerForEvent(req, res));      
+      this.app.post('userprofile', (req, res) => this.getUserProfile(req, res));    
     }
 
 
@@ -223,6 +224,51 @@ class App {
           res.status(500).json({ message: 'Error logging in' });
         }
     }
+
+
+    private async getUserProfile(req: Request, res: Response): Promise<void> {
+      try {
+          const authHeader = req.headers['authorization'];
+          const token = authHeader && authHeader.split(' ')[1];
+  
+          if (!token) {
+              res.status(401).json({ message: 'Unauthorized' });
+              return;
+          }
+  
+          let decoded: DecodedToken;
+          try {
+              decoded = jwt.verify(token, JWT_KEY) as DecodedToken;
+          } catch (err) {
+              res.status(403).json({ message: 'Invalid token' });
+              return;
+          }
+  
+          const { email } = decoded;
+  
+          if (!this.connection) {
+              res.status(500).json({ message: 'Database connection error' });
+              return;
+          }
+  
+          const [results] = await this.connection.execute<mysql.RowDataPacket[]>(
+              'SELECT email, firstName, lastName FROM student WHERE email = ?',
+              [email]
+          );
+  
+          if (results.length === 0) {
+              res.status(404).json({ message: 'User not found' });
+              return;
+          }
+  
+          res.json(results[0]);
+      } catch (error) {
+          console.error('Error fetching user profile:', error);
+          res.status(500).json({ message: 'Error fetching user profile' });
+      }
+  }
+  
+
 
     // private protectedRoute(req: Request, res: Response) {
     //     const authHeader = req.headers['authorization'];

@@ -61,6 +61,7 @@ class App {
         this.app.get('/events/filter', (req, res) => this.filterEvents(req, res));
         this.app.post('/events/add', (req, res) => this.addEvent(req, res));
         this.app.post('/events/register', (req, res) => this.registerForEvent(req, res));
+        this.app.post('userprofile', (req, res) => this.getUserProfile(req, res));
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     async registerUser(req, res) {
@@ -115,6 +116,39 @@ class App {
         catch (error) {
             console.error('Login error:', error);
             res.status(500).json({ message: 'Error logging in' });
+        }
+    }
+    async getUserProfile(req, res) {
+        try {
+            const authHeader = req.headers['authorization'];
+            const token = authHeader && authHeader.split(' ')[1];
+            if (!token) {
+                res.status(401).json({ message: 'Unauthorized' });
+                return;
+            }
+            let decoded;
+            try {
+                decoded = jwt.verify(token, JWT_KEY);
+            }
+            catch (err) {
+                res.status(403).json({ message: 'Invalid token' });
+                return;
+            }
+            const { email } = decoded;
+            if (!this.connection) {
+                res.status(500).json({ message: 'Database connection error' });
+                return;
+            }
+            const [results] = await this.connection.execute('SELECT email, firstName, lastName FROM student WHERE email = ?', [email]);
+            if (results.length === 0) {
+                res.status(404).json({ message: 'User not found' });
+                return;
+            }
+            res.json(results[0]);
+        }
+        catch (error) {
+            console.error('Error fetching user profile:', error);
+            res.status(500).json({ message: 'Error fetching user profile' });
         }
     }
     // private protectedRoute(req: Request, res: Response) {

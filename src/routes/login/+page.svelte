@@ -20,14 +20,7 @@
             else if (response.ok && data.token) {
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('userRole', data.role);
-                // goto(role === 'admin' ? '/admindashboard' : '/userdashboard');
-
-                if (data.role === 'admin') {
-                    goto('./admindashboard');
-                }
-                else {
-                    goto('./userdashboard');
-                }
+                goto(role === 'admin' ? '/admindashboard' : '/userdashboard');
             }
             else {
                 error = 'Invalid credentials';

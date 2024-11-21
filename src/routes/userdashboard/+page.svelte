@@ -9,16 +9,20 @@
      */
   let todaysEvents = $state([]);
 
+  function tokenIsExpired(token) {
+    const decoded = JSON.parse(atob(token.split('.')[1]));
+    return decoded.exp * 1000 < Date.now();
+  }
+
   onMount(async () => {
       const token = localStorage.getItem('authToken');
-      if (!token) {
-          navigate('/login');
-          return;
+      if (!token || tokenIsExpired(token)) {
+        localStorage.removeItem('authToken');
+        navigate('/login');
       }
 
-      // Fetch user data
       try {
-          const userResponse = await fetch('http://localhost:5173/user-profile', {
+          const userResponse = await fetch('http://localhost:5173/userprofile', {
               headers: { 'Authorization': `Bearer ${token}` }
           });
 

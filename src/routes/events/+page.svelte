@@ -1,5 +1,4 @@
 <script>
-    import { navigate } from "svelte-routing";
   
     // Sample Events Data
     let events = [

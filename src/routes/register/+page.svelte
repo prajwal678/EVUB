@@ -51,7 +51,7 @@
         successMessage = 'Registration successful! Redirecting to login...';
         error = '';
         setTimeout(() => {
-          navigate('/login');
+          window.location.href = "/login";
         }, 2000);
       } else {
         error = result.message || 'Registration failed. Please try again.';
