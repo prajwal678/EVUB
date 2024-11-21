@@ -30,8 +30,9 @@
               userData = await userResponse.json();
           } else {
               error = 'Failed to fetch user data. Please log in again.';
-              navigate('/login');
+              window.location.hred = '/login';
           }
+
       } catch (err) {
           console.error('Error fetching user data:', err);
           error = 'An error occurred while loading the dashboard.';
@@ -39,7 +40,7 @@
 
       // Fetch today's events
       try {
-          const eventsResponse = await fetch('http://localhost:5173/todays-events', {
+          const eventsResponse = await fetch('http://localhost:5173/events/filter', {
               headers: { 'Authorization': `Bearer ${token}` }
           });
 

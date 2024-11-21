@@ -146,7 +146,7 @@ class App {
       this.app.get('/events/filter', (req, res) => this.filterEvents(req, res));
       this.app.post('/events/add', (req, res) => this.addEvent(req, res));
       this.app.post('/events/register', (req, res) => this.registerForEvent(req, res));      
-      this.app.post('userprofile', (req, res) => this.getUserProfile(req, res));    
+      this.app.post('/userprofile', (req, res) => this.getUserProfile(req, res));    
     }
 
 
@@ -229,6 +229,11 @@ class App {
     private async getUserProfile(req: Request, res: Response): Promise<void> {
       try {
           const authHeader = req.headers['authorization'];
+          if (!authHeader) {
+            res.status(401).json({ message: 'Missing Authorization header' });
+            return;
+        }
+        
           const token = authHeader && authHeader.split(' ')[1];
   
           if (!token) {
@@ -266,7 +271,7 @@ class App {
           console.error('Error fetching user profile:', error);
           res.status(500).json({ message: 'Error fetching user profile' });
       }
-  }
+    }
   
 
 

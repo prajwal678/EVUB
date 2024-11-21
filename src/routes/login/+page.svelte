@@ -1,5 +1,4 @@
 <script>
-    import { goto } from '$app/navigation';
 
     let email = '';
     let password = '';
@@ -18,9 +17,15 @@
                 error = 'User not registered';
             }
             else if (response.ok && data.token) {
-                localStorage.setItem('authToken', data.token);
+                // localStorage.setItem('authToken', data.token);
                 localStorage.setItem('userRole', data.role);
-                goto(role === 'admin' ? '/admindashboard' : '/userdashboard');
+                localStorage.setItem('email', data.email);
+
+                if (data.role === 'admin') {
+                    window.location.href = '/admindashboard';
+                } else {
+                  window.location.href = '/userdashboard';
+                }
             }
             else {
                 error = 'Invalid credentials';
