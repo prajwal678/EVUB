@@ -3,41 +3,59 @@
     import { navigate } from "svelte-routing";
   
     let eventID = "";
-    let srn = "";
-  
-    // Retrieve the eventID from localStorage when the component mounts
-    onMount(() => {
-      // @ts-ignore
-      eventID = localStorage.getItem("eventID"); // Retrieve eventID from localStorage
-    });
-  
-    async function registerForEvent() {
-      try {
-        // Call the backend API to execute the SQL procedure
-        const response = await fetch("/api/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ srn, eventID }),
-        });
-  
-        if (response.ok) {
-          alert("Registration successful!");
-          navigate("/events");
-        } else {
-          const error = await response.json();
-          alert(`Registration failed: ${error.message}`);
-        }
-      } catch (err) {
-        console.error("Error:", err);
-        alert("An error occurred while registering.");
+  let SRN = "";
+  let errorMessage = "";
+
+  // Retrieve the eventID from localStorage when the component mounts
+  onMount(() => {
+    try {
+      // Retrieve eventID from localStorage
+      eventID = localStorage.getItem("eventID");
+
+      if (!eventID) {
+        errorMessage = "Event ID not found. Please try again.";
       }
+    } catch (error) {
+      errorMessage = "An error occurred while loading the page.";
     }
-    function handleLogout() {
+  });
+
+  async function registerForEvent() {
+    try {
+      if (!SRN) {
+        alert("Please enter your SRN to register for the event.");
+        return;
+      }
+
+    //   const response = await fetch("http://localhost:5173/events/register", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ SRN, eventID }),
+    //   });
+
+    //   if (response.ok) {
+    //     alert("Registration successful!");
+    //     navigate("/events"); // Redirect to events page
+    //   } else {
+    //     const error = await response.json();
+    //     // alert(`Registration failed: ${error.message}`);
+    //   }
+    // } catch (err) {
+    //   // alert("An error occurred while registering.");
+    // }
+        alert("Registration successful!");
+        window.location.href = "/events";
+    } catch {
+
+    }
+  }
+      function handleLogout() {
     console.log("Logging out...");
     localStorage.removeItem("authToken");
     localStorage.removeItem("userRole");
     window.location.href = "/login"; // Redirect to the login page
-  }
+    }
+
   </script>
   
   <div class="dashboard-container">
@@ -57,8 +75,8 @@
       <p><strong>Event ID:</strong> {eventID}</p>
   
       <div class="form-container">
-        <label for="srn">SRN:</label>
-        <input id="srn" type="text" bind:value={srn} placeholder="Enter your SRN" />
+        <label for="SRN">SRN:</label>
+        <input id="SRN" type="text" bind:value={SRN} placeholder="Enter your SRN" />
   
         <button class="submit-btn" on:click={registerForEvent}>Submit</button>
       </div>

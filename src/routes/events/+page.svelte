@@ -1,13 +1,13 @@
 <script>
   
-    // Sample Events Data
     let events = [
-      { eventID: "E001", eventName: "Music Night", eventDate: "2024-11-20", eventStartTime: "18:00", eventEndTime: "21:00", clubID: "C001", venueID: "V001" },
-      { eventID: "E002", eventName: "Art Exhibition", eventDate: "2024-11-21", eventStartTime: "10:00", eventEndTime: "17:00", clubID: "C002", venueID: "V002" },
-      { eventID: "E003", eventName: "Drama Fest", eventDate: "2024-11-21", eventStartTime: "14:00", eventEndTime: "17:00", clubID: "C003", venueID: "V003" },
-      { eventID: "E004", eventName: "Tech Talk", eventDate: "2024-11-22", eventStartTime: "11:00", eventEndTime: "13:00", clubID: "C004", venueID: "V004" },
+      { eventID: "EVT002", eventName: "Art Exhibition", eventDate: "2024-11-21", eventStartTime: "10:00:00", eventEndTime: "17:00:00", clubID: "C002", venueID: "VEN002" },
+      { eventID: "EVT003", eventName: "Drama Fest", eventDate: "2024-11-21", eventStartTime: "14:00:00", eventEndTime: "17:00:00", clubID: "C003", venueID: "VEN003" },
+      { eventID: "EVT004", eventName: "Tech Talk", eventDate: "2024-11-22", eventStartTime: "11:00:00", eventEndTime: "13:00:00", clubID: "C004", venueID: "VEN004" },
+      {eventID: 'EVT001', eventName: 'MoDeRn ArT', eventDate: '2024-11-22', eventStartTime: '10:00:00', eventEndTime: '14:00:00', clubID: 'C001', venueID: 'VEN001'},
+      { eventID: "EVT001", eventName: "Music Night", eventDate: "2024-11-23", eventStartTime: "18:00:00", eventEndTime: "21:00:00", clubID: "C001", venueID: "VEN001" },
+      {eventID: 'EVT002', eventName: 'Science Fair', eventDate: '2024-11-23', eventStartTime: '09:00:00', eventEndTime: '17:00:00', clubID: 'C002', venueID: 'VEN002'},
     ];
-  
     // Filter State
     let filters = {
       eventDate: "",

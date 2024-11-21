@@ -53,6 +53,6 @@ VALUES
 
 INSERT INTO event (eventID, eventName, eventDate, eventStartTime, eventEndTime, clubID, venueID) 
 VALUES 
-('EVT003', 'Coding Workshop', '2024-11-22', '10:00:00', '13:00:00', 'C003', 'VEN003'),
-('EVT004', 'Music Fest', '2024-11-22', '15:00:00', '18:00:00', 'C004', 'VEN004'),
-('EVT005', 'Dance Competition', '2024-11-22', '12:00:00', '16:00:00', 'C005', 'VEN005');
+('EVT003', 'Coding Workshop', '2024-11-22', '10:00:00', '13:00:00', 'C001', 'VEN001'),
+('EVT004', 'Music Fest', '2024-11-22', '15:00:00', '18:00:00', 'C002', 'VEN002'),
+('EVT005', 'Dance Competition', '2024-11-22', '13:30:00', '16:00:00', 'C002', 'VEN001');

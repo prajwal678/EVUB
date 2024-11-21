@@ -287,60 +287,148 @@ class App {
     //     });
     // }
 
+    // private async filterEvents(req: Request, res: Response): Promise<void> {
+    //     try {
+    //       const { clubName, eventDate, venueName, startTime, endTime } = req.query;
+    
+    //       if (!this.connection) {
+    //         res.status(500).json({ message: 'Database connection error' });
+    //         return;
+    //       }
+    
+    //       let query = `
+    //         SELECT e.eventID, e.eventName, e.eventDate, e.eventStartTime, e.eventEndTime, 
+    //                c.clubName, v.venueName
+    //         FROM event e
+    //         JOIN club c ON e.clubID = c.clubID
+    //         JOIN venue v ON e.venueID = v.venueID
+    //         WHERE 1=1
+    //       `;
+    
+    //       const params: any[] = [];
+    
+    //       if (clubName) {
+    //         query += ` AND c.clubName = ?`;
+    //         params.push(clubName);
+    //       }
+    
+    //       if (eventDate) {
+    //         query += ` AND e.eventDate = ?`;
+    //         params.push(eventDate);
+    //       } else {
+    //         query += ` AND e.eventDate >= CURDATE()`;
+    //       }
+    
+    //       if (venueName) {
+    //         query += ` AND v.venueName = ?`;
+    //         params.push(venueName);
+    //       }
+    //       if (startTime) {
+    //         query += ` AND e.eventStartTime >= ?`;
+    //         params.push(startTime);
+    //       }
+    //       if (endTime) {
+    //         query += ` AND e.eventEndTime <= ?`;
+    //         params.push(endTime);
+    //       }
+    
+    //       query += ` ORDER BY e.eventDate ASC, e.eventStartTime ASC;`;
+    
+    //       const [results] = await this.connection.execute(query, params);
+    //       res.status(200).json({ events: results });
+    //     } catch (error) {
+    //       console.error('Database error:', error);
+    //       res.status(500).json({ message: 'Error fetching filtered events' });
+    //     }
+    // }
+
+
+    // if doing based on mail
     private async filterEvents(req: Request, res: Response): Promise<void> {
-        try {
-          const { clubName, eventDate, venueName, startTime, endTime } = req.query;
-    
+      try {
+          const { email, clubName, eventDate, venueName, startTime, endTime } = req.query;
+          console.log('Filter events received with:', { email, clubName, eventDate, venueName, startTime, endTime });
+  
+          if (!email) {
+              res.status(400).json({ message: 'Email is required' });
+              return;
+          }
+  
           if (!this.connection) {
-            res.status(500).json({ message: 'Database connection error' });
-            return;
+              res.status(500).json({ message: 'Database connection error' });
+              return;
           }
-    
+  
+          // Fetch user from the database using the email
+          const [userResults] = await this.connection.execute(
+              'SELECT * FROM users WHERE email = ?', [email]
+          );
+          console.log('User Results:', userResults);
+  
+          if ((userResults as any[]).length === 0) {
+              res.status(404).json({ message: 'User not found' });
+              return;
+          }
+  
           let query = `
-            SELECT e.eventID, e.eventName, e.eventDate, e.eventStartTime, e.eventEndTime, 
-                   c.clubName, v.venueName
-            FROM event e
-            JOIN club c ON e.clubID = c.clubID
-            JOIN venue v ON e.venueID = v.venueID
-            WHERE 1=1
+              SELECT e.eventID, e.eventName, e.eventDate, e.eventStartTime, e.eventEndTime, 
+                  c.clubName, v.venueName
+              FROM event e
+              JOIN club c ON e.clubID = c.clubID
+              JOIN venue v ON e.venueID = v.venueID
+              WHERE 1=1
           `;
-    
+  
           const params: any[] = [];
-    
+  
           if (clubName) {
-            query += ` AND c.clubName = ?;`;
-            params.push(clubName);
+              query += ` AND c.clubName = ?`;
+              params.push(clubName);
           }
-    
+  
           if (eventDate) {
-            query += ` AND e.eventDate = ?;`;
-            params.push(eventDate);
+              query += ` AND e.eventDate = ?`;
+              params.push(eventDate);
           } else {
-            query += ` AND e.eventDate >= CURDATE();`;
+              query += ` AND e.eventDate >= CURDATE()`;
           }
-    
+  
           if (venueName) {
-            query += ` AND v.venueName = ?;`;
-            params.push(venueName);
+              query += ` AND v.venueName = ?`;
+              params.push(venueName);
           }
+  
           if (startTime) {
-            query += ` AND e.eventStartTime >= ?;`;
-            params.push(startTime);
+              query += ` AND e.eventStartTime >= ?`;
+              params.push(startTime);
           }
+  
           if (endTime) {
-            query += ` AND e.eventEndTime <= ?;`;
-            params.push(endTime);
+              query += ` AND e.eventEndTime <= ?`;
+              params.push(endTime);
           }
-    
+  
           query += ` ORDER BY e.eventDate ASC, e.eventStartTime ASC;`;
-    
+  
+          console.log('Executing query:', query);
+          console.log('With parameters:', params);
+  
+          // Execute the query and get the results
           const [results] = await this.connection.execute(query, params);
-          res.status(200).json({ events: results });
-        } catch (error) {
+          console.log('Query results:', results);
+  
+          if ((results as any[]).length === 0) {
+              res.status(404).json({ message: 'No events found for the given filters' });
+          } else {
+              res.status(200).json({ events: results });
+          }
+      } catch (error) {
           console.error('Database error:', error);
           res.status(500).json({ message: 'Error fetching filtered events' });
-        }
-    }
+      }
+  }
+  
+  
     
     private async addEvent(req: Request, res: Response): Promise<void> {
         try {

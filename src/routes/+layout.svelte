@@ -18,14 +18,15 @@
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('authToken');
       const userRole = localStorage.getItem('userRole');
-      
-      if (!token) {
-        goto('/login');
-      } else if (userRole === 'admin' && $page.url.pathname !== '/admindashboard') {
-        goto('/admindashboard');
-      } else if (userRole === 'user' && $page.url.pathname !== '/userdashboard') {
-        goto('/userdashboard');
-      }
+      const currentPath = $page.url.pathname;
+
+      if (!token && currentPath !== '/login' && currentPath !== '/register') {
+      goto('/login');
+    } else if (token && userRole === 'admin' && currentPath !== '/admindashboard') {
+      goto('/admindashboard');
+    } else if (token && userRole === 'user' && currentPath !== '/userdashboard') {
+      goto('/userdashboard');
+    }
     }
   }
   </script>

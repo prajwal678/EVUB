@@ -9,14 +9,17 @@
      */
   let todaysEvents = $state([]);
 
+
   function tokenIsExpired(token) {
     const decoded = JSON.parse(atob(token.split('.')[1]));
     return decoded.exp * 1000 < Date.now();
   }
 
   onMount(async () => {
+    if (typeof window !== 'undefined' && window.localStorage) {
       const token = localStorage.getItem('authToken');
       email = localStorage.getItem("email");
+
       if (!token || tokenIsExpired(token)) {
         localStorage.removeItem('authToken');
         navigate('/login');
@@ -40,20 +43,45 @@
       // }
 
       // Fetch today's events
-      try {
-          const eventsResponse = await fetch('http://localhost:5173/events/filter', {
-              headers: { 'Authorization': `Bearer ${token}` }
-          });
+      // try {
+      //     const eventsResponse = await fetch('http://localhost:5173/events/filter', {
+      //         headers: { 'Authorization': `Bearer ${token}` }
+      //     });
 
-          if (eventsResponse.ok) {
-              todaysEvents = await eventsResponse.json();
+      //     if (eventsResponse.ok) {
+      //         todaysEvents = await eventsResponse.json();
+      //     } else {
+      //         console.error('Error fetching today’s events');
+      //     }
+      // } catch (err) {
+      //     console.error('Error fetching events:', err);
+      // }
+
+      try {
+        const eventsResponse = await fetch(`http://localhost:5173/events/filter?email=${encodeURIComponent(email)}`, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (eventsResponse.ok) {
+          const data = await eventsResponse.json();
+          console.log("Fetched events:", data);
+
+          if (data.events && data.events.length > 0) {
+            todaysEvents = data.events;
           } else {
-              console.error('Error fetching today’s events');
+            error = 'No events found for today.';
           }
+        } else {
+          error = `Error fetching events: ${eventsResponse.status}`;
+          console.error("Failed to fetch events:", eventsResponse.status);
+        }
       } catch (err) {
-          console.error('Error fetching events:', err);
+        error = `Error fetching events: ${err.message}`;
+        console.error("Error occurred:", err);
       }
+    }
   });
+
 
   function handleLogout() {
     console.log("Logging out...");

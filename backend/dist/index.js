@@ -61,7 +61,7 @@ class App {
         this.app.get('/events/filter', (req, res) => this.filterEvents(req, res));
         this.app.post('/events/add', (req, res) => this.addEvent(req, res));
         this.app.post('/events/register', (req, res) => this.registerForEvent(req, res));
-        this.app.post('userprofile', (req, res) => this.getUserProfile(req, res));
+        this.app.post('/userprofile', (req, res) => this.getUserProfile(req, res));
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     async registerUser(req, res) {
@@ -121,6 +121,10 @@ class App {
     async getUserProfile(req, res) {
         try {
             const authHeader = req.headers['authorization'];
+            if (!authHeader) {
+                res.status(401).json({ message: 'Missing Authorization header' });
+                return;
+            }
             const token = authHeader && authHeader.split(' ')[1];
             if (!token) {
                 res.status(401).json({ message: 'Unauthorized' });
@@ -177,26 +181,26 @@ class App {
           `;
             const params = [];
             if (clubName) {
-                query += ` AND c.clubName = ?;`;
+                query += ` AND c.clubName = ?`;
                 params.push(clubName);
             }
             if (eventDate) {
-                query += ` AND e.eventDate = ?;`;
+                query += ` AND e.eventDate = ?`;
                 params.push(eventDate);
             }
             else {
-                query += ` AND e.eventDate >= CURDATE();`;
+                query += ` AND e.eventDate >= CURDATE()`;
             }
             if (venueName) {
-                query += ` AND v.venueName = ?;`;
+                query += ` AND v.venueName = ?`;
                 params.push(venueName);
             }
             if (startTime) {
-                query += ` AND e.eventStartTime >= ?;`;
+                query += ` AND e.eventStartTime >= ?`;
                 params.push(startTime);
             }
             if (endTime) {
-                query += ` AND e.eventEndTime <= ?;`;
+                query += ` AND e.eventEndTime <= ?`;
                 params.push(endTime);
             }
             query += ` ORDER BY e.eventDate ASC, e.eventStartTime ASC;`;

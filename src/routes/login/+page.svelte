@@ -17,7 +17,7 @@
                 error = 'User not registered';
             }
             else if (response.ok && data.token) {
-                // localStorage.setItem('authToken', data.token);
+                localStorage.setItem('authToken', data.token);
                 localStorage.setItem('userRole', data.role);
                 localStorage.setItem('email', data.email);
 
