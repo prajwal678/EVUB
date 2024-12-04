@@ -1,0 +1,37 @@
+
+Step 1: Register a New User
+Open Postman and select POST.
+
+Enter the URL: http://localhost:5000/register.
+
+Go to the "Body" tab, choose "raw", and set the type to "JSON".
+
+Add the following JSON data to the request body:
+
+json
+Copy code
+{
+  "SRN": "SRN001",
+  "email": "testuser@example.com",
+  "pwd": "password123",
+  "phone_no": "1234567890",
+  "firstName": "Test",
+  "lastName": "User"
+}
+
+
+Step 2: Log In with the Registered User
+In Postman, create a new request and select POST.
+
+Enter the URL: http://localhost:5000/login.
+
+Go to the "Body" tab, choose "raw", and set the type to "JSON".
+
+Add the following JSON data:
+
+json
+Copy code
+{
+  "email": "testuser@example.com",
+  "pwd": "password123"
+}
